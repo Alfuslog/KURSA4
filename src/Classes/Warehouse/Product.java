@@ -1,16 +1,16 @@
 package Classes.Warehouse;
 
-import Classes.Location;
+import Classes.LocationProducts;
 
 import java.util.Random;
 
 public class Product {
-    Location location;
+    private LocationProducts location;
 
     private final int length;
     private final int width;
     private final int height;
-    private final int weight;
+    private final int weight; //вес
 
     private String nameProduct;
     private int countProduct;
@@ -24,17 +24,12 @@ public class Product {
         this.width = width;
         this.height = height;
         this.weight = weight;
-        int newArticle = new Random().nextInt(100000, 999999);
-        this.article = newArticle;
-
-        location.setNameProduct(nameProduct);
-        location.setCountProduct(countProduct);
-        location.setArticle(newArticle);
 
     }
 
-    public void generateArticule(){
+    public int generateArticule(){
         article = new Random().nextInt(100000, 999999);
+        return article;
     }
 
     public void changeNumberOnShelf(int newNumber){

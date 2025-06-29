@@ -24,5 +24,15 @@ public class Rack {
         else listShelfs.get(nomberShelf).changeMarginShelf(newHeight);
     }
 
+    public boolean checkShellfIsEmpty(int numberProduct){
+        numberProduct -= 1;
+        if (listShelfs[numberProduct].)
+        if (shelfProducts.isEmpty() && totalLength == freeLength){
+            return true;
+        }
+        else return false;
+    }
+
+
 
 }
