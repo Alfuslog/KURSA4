@@ -20,6 +20,7 @@ public class LocationProducts {
 //    public void setNameProductLocation(String nameProduct) {
 //        this.nameProduct = nameProduct;
 //    }
+
     public int getArticleLocation() {
         return article;
     }

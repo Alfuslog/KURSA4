@@ -1,6 +1,8 @@
 package Classes.Warehouse;
 
 import java.util.LinkedList;
+import java.lang.Math;
+
 
 public class Shelf {
     private LinkedList<Product> shelfProducts;
@@ -19,7 +21,6 @@ public class Shelf {
     private boolean shelfIsEmpty;
 
 
-
     public Shelf(int nomberShelf,int totalLength, int width, int margin, int maxWeight){
         this.nomberShelf = nomberShelf;
         this.totalLength = this.freeLength = totalLength;
@@ -34,7 +35,7 @@ public class Shelf {
     }
 
 
-    public void changeMarginShelf(int newHeight){
+    public void changeMarginShelf(int newHeight){  // меняем высоту полки
         this.margin_top = margin_top - newHeight;
         if (newHeight <= margin_top/2)
             this.margin_top = margin_top - newHeight;
@@ -47,28 +48,45 @@ public class Shelf {
         else return false;
     }
 
-    public boolean checkOfCapacityManyProducts(int heightProduct, int widthProduct, int cntProducts){
+    public int getCountInLength(int heightProduct, int widthProduct, int cntProducts){
         int cntInHeight = margin_top/heightProduct;
-        int cntInWidth = freeLength/widthProduct;
-        int totalSpaceCnt = cntInHeight*cntInWidth;
+        int cntInLength = freeLength/widthProduct;
 
-        if (totalSpaceCnt >= cntProducts) return true;
-        else return false;
-    }
-    public int checkOfCountInSpace(int heightProduct, int widthProduct, int cntProducts){
-        int cntInHeight = margin_top/heightProduct;
-        int cntInWidth = freeLength/widthProduct;
-        int totalSpaceCnt = cntInHeight*cntInWidth;
+        int totalSpaceCnt = cntInHeight*cntInLength;
+
+        boolean CapacityAllProducts = totalSpaceCnt >= cntProducts;
+        int cntInLengthAndHeight;
+        if(cntProducts > cntInHeight){
+                cntInLengthAndHeight = (int) Math.ceil((double) cntProducts/cntInHeight);
+            }
+            else cntInLengthAndHeight = cntProducts;
+
 
         return totalSpaceCnt/cntProducts;
-
     }
 
+    public int getCountCanPutInShelf(int heightProduct, int widthProduct, int cntProducts){ //возвращаем не влезший остаток  остаток
+        int cntInHeight = margin_top/heightProduct;
+        int cntInWidth = freeLength/widthProduct;
 
-    public boolean checkShelfIsFulled(){
-        if ()
+
+        int totalSpaceCnt = cntInHeight*cntInWidth;
+
+        int capacityInSpace = totalSpaceCnt/cntProducts;
+        int ostatok = cntProducts - capacityInSpace;
+        if (ostatok > 0){
+            return ostatok;
+        }
+        else return 0;
     }
 
+    //public int getCntInWidth()
+
+    public boolean canProductPut(int heightProduct){
+        if (heightProduct>freeLength) {
+            return false;
+        } else return true;
+    }
 
 //    public void removeShelf(){
 //        if(checkShellfIsEmpty()){
@@ -76,12 +94,15 @@ public class Shelf {
 //        }
 //    }
 
-    public void addProductToShelf(Product product, int width) {
-        if (!shelfIsFulled){
-            shelfIsEmpty = false;
+    public int addProductToShelf(Product product, int cntProducts) {
+        if (canProductPut(product.getWidth()) && checkOfCapacityProducts()){
+            if (shelfIsEmpty == true) {shelfIsEmpty = false;}
+
+            int occupiedWidth =
             shelfProducts.add(product);
-            this.freeLength -= width;
+            this.freeLength -= occupiedWidth;
             }
+
 
     }
 
