@@ -26,30 +26,60 @@ public class Product {
         this.weight = weight;
 
     }
+    public Product(Product other) {
+        this.nameProduct = other.nameProduct;
+        this.countProduct = other.countProduct;
+        this.length = other.length;
+        this.width = other.width;
+        this.height = other.height;
+        this.weight = other.weight;
+        this.article = other.article;
+        this.numberOnShelf = other.numberOnShelf;
+        // Если нужно копировать location, раскомментируйте:
+        // this.location = other.location;
+    }
 
     public int generateArticule(){
         article = new Random().nextInt(100000, 999999);
         return article;
     }
 
-    public void changeNumberOnShelf(int newNumber){
-        this.numberOnShelf = newNumber;
+    public String getNameProduct() {
+        return nameProduct;
+    }
+    public void setNameProduct(String nameProduct) {
+        this.nameProduct = nameProduct;
     }
 
+    public int getCountProduct() {
+        return countProduct;
+    }
+
+    public void setCountProduct(int countProduct) {
+        this.countProduct = countProduct;
+    }
     public int getArticle() {
         return article;
     }
+
     public int getHeight() {
         return height;
     }
+
     public int getWidth() {
         return width;
     }
+
     public int getLength() {
         return length;
     }
+
     public int getWeight() {
         return weight;
     }
+
     public int getNumberOnShelf(){return numberOnShelf;}
+    public void setNumberOnShelf(int newNumber){
+        this.numberOnShelf = newNumber;
+    }
 }

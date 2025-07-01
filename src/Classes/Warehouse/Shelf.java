@@ -1,11 +1,20 @@
 package Classes.Warehouse;
 
+import Classes.LocationProducts;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.lang.Math;
+import java.util.List;
 
 
 public class Shelf {
     private LinkedList<Product> shelfProducts;
+    private Product product;
+    private LocationProducts lProducts;
+    public List<Product> getShelfProducts() {
+        return new ArrayList<>(shelfProducts); // Возвращаем копию для безопасности
+    }
 
     //дшв
     private final int totalLength;
@@ -48,39 +57,23 @@ public class Shelf {
         else return false;
     }
 
-    public int getCountInLength(int heightProduct, int widthProduct, int cntProducts){
-        int cntInHeight = margin_top/heightProduct;
-        int cntInLength = freeLength/widthProduct;
+    public int getCountInLength(Product product){ // узнаём, помещается ли наше кол-во на полку, если нет, то ретурн остаток, или 0
+        if (product.getHeight() == 0 || product.getWidth() == 0) {
+            return product.getCountProduct(); // не помещается
+        }
+
+
+        int cntInHeight = margin_top/product.getHeight();
+        int cntInLength = freeLength/product.getWidth();
+        int cntProducts = product.getCountProduct();
 
         int totalSpaceCnt = cntInHeight*cntInLength;
-
-        boolean CapacityAllProducts = totalSpaceCnt >= cntProducts;
-        int cntInLengthAndHeight;
-        if(cntProducts > cntInHeight){
-                cntInLengthAndHeight = (int) Math.ceil((double) cntProducts/cntInHeight);
-            }
-            else cntInLengthAndHeight = cntProducts;
-
-
-        return totalSpaceCnt/cntProducts;
+        //boolean CapacityAllProducts = totalSpaceCnt >= cntProducts;
+        //int cntInLengthAndHeight;
+        //
+        //int ostatok = cntProducts - totalSpaceCnt;
+        return (totalSpaceCnt >= cntProducts) ? 0 : (cntProducts - totalSpaceCnt);
     }
-
-    public int getCountCanPutInShelf(int heightProduct, int widthProduct, int cntProducts){ //возвращаем не влезший остаток  остаток
-        int cntInHeight = margin_top/heightProduct;
-        int cntInWidth = freeLength/widthProduct;
-
-
-        int totalSpaceCnt = cntInHeight*cntInWidth;
-
-        int capacityInSpace = totalSpaceCnt/cntProducts;
-        int ostatok = cntProducts - capacityInSpace;
-        if (ostatok > 0){
-            return ostatok;
-        }
-        else return 0;
-    }
-
-    //public int getCntInWidth()
 
     public boolean canProductPut(int heightProduct){
         if (heightProduct>freeLength) {
@@ -94,27 +87,54 @@ public class Shelf {
 //        }
 //    }
 
-    public int addProductToShelf(Product product, int cntProducts) {
-        if (canProductPut(product.getWidth()) && checkOfCapacityProducts()){
-            if (shelfIsEmpty == true) {shelfIsEmpty = false;}
+    public int addProductToShelf(Product product) {
+        if (product == null) {
+            return -1; // или выбросить исключение
+        }
 
-            int occupiedWidth =
+        // Проверяем, помещается ли продукт по длине
+        if (!canProductPut(product.getWidth())) {
+            return product.getCountProduct(); // не помещается - возвращаем всё количество
+        }
+
+        // Проверяем, сколько продуктов не помещается (остаток)
+        int remainingProducts = getCountInLength(product);
+
+        if (remainingProducts > 0) {
+            // Помещаем только часть продуктов (сколько влезает)
+            int productsToAdd = product.getCountProduct() - remainingProducts;
+            Product partialProduct = new Product(product); // нужен конструктор копирования
+            partialProduct.setCountProduct(productsToAdd);
+            shelfProducts.add(partialProduct);
+            this.freeLength -= product.getWidth() * productsToAdd;
+            shelfIsEmpty = false;
+            return remainingProducts;
+        } else {
+            // Помещаем все продукты
             shelfProducts.add(product);
-            this.freeLength -= occupiedWidth;
+            this.freeLength -= product.getWidth() * product.getCountProduct();
+            shelfIsEmpty = false;
+            return 0; // всё поместилось
+        }
+    }
+
+    public void extractProduct(int numberProduct) {
+        if (numberProduct < 1 || shelfProducts == null || shelfProducts.isEmpty()) {
+            return; // некорректный номер или пустая полка
+        }
+
+        int index = numberProduct - 1; // преобразуем номер в индекс (если нумерация с 1)
+
+        if (index >= 0 && index < shelfProducts.size()) {
+            Product removedProduct = shelfProducts.remove(index);
+            this.freeLength += removedProduct.getWidth() * removedProduct.getCountProduct();
+
+            // Если полка опустела, устанавливаем флаг
+            if (shelfProducts.isEmpty()) {
+                shelfIsEmpty = true;
             }
-
-
+        }
     }
-
-    public void extractProduct(int numberProduct){
-        numberProduct -= 1;
-
-    }
-
-//    public int getNomberShelf() {
-//        return nomberShelf;
-//    }
-
 
     public int getNomberShelf() {
         return nomberShelf;
