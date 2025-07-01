@@ -1,4 +1,4 @@
-package Classes;
+package Classes.Warehouse;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

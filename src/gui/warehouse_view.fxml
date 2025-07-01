@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+        <?import javafx.scene.control.*?>
+        <?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="gui.WarehouseController" prefWidth="600" prefHeight="400">
+    <VBox spacing="10" layoutX="10" layoutY="10">
+        <Label text="Добавить продукт"/>
+        <HBox spacing="5">
+            <TextField fx:id="nameField" promptText="Название"/>
+            <TextField fx:id="lengthField" promptText="Длина"/>
+            <TextField fx:id="widthField" promptText="Ширина"/>
+            <TextField fx:id="heightField" promptText="Высота"/>
+            <TextField fx:id="weightField" promptText="Вес"/>
+            <TextField fx:id="countField" promptText="Кол-во"/>
+            <TextField fx:id="shelfField" promptText="Полка"/>
+        </HBox>
+        <Button text="Добавить" onAction="#onAddProduct"/>
+        <Label text="Список товаров"/>
+        <ListView fx:id="productList" prefHeight="250"/>
+    </VBox>
+</AnchorPane>

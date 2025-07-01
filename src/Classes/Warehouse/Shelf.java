@@ -1,10 +1,7 @@
 package Classes.Warehouse;
 
-import Classes.LocationProducts;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.lang.Math;
 import java.util.List;
 
 
@@ -31,6 +28,7 @@ public class Shelf {
 
 
     public Shelf(int nomberShelf,int totalLength, int width, int margin, int maxWeight){
+        this.shelfProducts = new LinkedList<>();
         this.nomberShelf = nomberShelf;
         this.totalLength = this.freeLength = totalLength;
         this.width = width;
@@ -59,7 +57,7 @@ public class Shelf {
 
     public int getCountInLength(Product product){ // узнаём, помещается ли наше кол-во на полку, если нет, то ретурн остаток, или 0
         if (product.getHeight() == 0 || product.getWidth() == 0) {
-            return product.getCountProduct(); // не помещается
+            return product.getCountProduct();
         }
 
 

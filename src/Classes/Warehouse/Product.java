@@ -1,7 +1,5 @@
 package Classes.Warehouse;
 
-import Classes.LocationProducts;
-
 import java.util.Random;
 
 public class Product {
@@ -35,8 +33,6 @@ public class Product {
         this.weight = other.weight;
         this.article = other.article;
         this.numberOnShelf = other.numberOnShelf;
-        // Если нужно копировать location, раскомментируйте:
-        // this.location = other.location;
     }
 
     public int generateArticule(){

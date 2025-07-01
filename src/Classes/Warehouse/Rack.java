@@ -1,11 +1,9 @@
 package Classes.Warehouse;
 
-import Classes.LocationProducts;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Rack {
     private final List<Shelf> shelves;
@@ -20,6 +18,11 @@ public class Rack {
             shelves.add(new Shelf(i + 1, shelfLength, shelfWidth, marginTop, maxWeight));
         }
     }
+
+    public String getIdRack() {
+        return idRack;
+    }
+
 
     public int addProductToShelf(int shelfNumber, Product product) {
         if (shelfNumber < 1 || shelfNumber > shelves.size()) {
