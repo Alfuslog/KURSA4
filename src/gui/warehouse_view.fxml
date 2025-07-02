@@ -1,22 +1,130 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-        <?import javafx.scene.control.*?>
-        <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="gui.WarehouseController" prefWidth="600" prefHeight="400">
-    <VBox spacing="10" layoutX="10" layoutY="10">
-        <Label text="Добавить продукт"/>
-        <HBox spacing="5">
-            <TextField fx:id="nameField" promptText="Название"/>
-            <TextField fx:id="lengthField" promptText="Длина"/>
-            <TextField fx:id="widthField" promptText="Ширина"/>
-            <TextField fx:id="heightField" promptText="Высота"/>
-            <TextField fx:id="weightField" promptText="Вес"/>
-            <TextField fx:id="countField" promptText="Кол-во"/>
-            <TextField fx:id="shelfField" promptText="Полка"/>
-        </HBox>
-        <Button text="Добавить" onAction="#onAddProduct"/>
-        <Label text="Список товаров"/>
-        <ListView fx:id="productList" prefHeight="250"/>
-    </VBox>
-</AnchorPane>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="gui.WarehouseController"
+            prefWidth="800" prefHeight="600">
+
+    <!-- Заголовок -->
+    <top>
+        <VBox spacing="10" style="-fx-background-color: #f0f0f0; -fx-padding: 10;">
+            <Label text="Система управления складом"
+                   style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <Label fx:id="statusLabel" text="Готов к работе..."
+                   style="-fx-text-fill: #666666;"/>
+        </VBox>
+    </top>
+
+    <!-- Основной контент -->
+    <center>
+        <SplitPane dividerPositions="0.4" orientation="HORIZONTAL">
+
+            <!-- Левая панель - добавление товаров -->
+            <VBox spacing="15" style="-fx-padding: 15;">
+                <Label text="Добавить товар"
+                       style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+                <!-- Основная информация -->
+                <GridPane hgap="10" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="80" prefWidth="80"/>
+                        <ColumnConstraints minWidth="150" prefWidth="150"/>
+                    </columnConstraints>
+
+                    <Label text="Название:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <TextField fx:id="nameField" promptText="Введите название"
+                               GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                    <Label text="Стеллаж:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <ComboBox fx:id="rackSelector" prefWidth="150"
+                              GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                    <Label text="Полка:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <TextField fx:id="shelfField" promptText="№ полки"
+                               GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                    <Label text="Количество:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <TextField fx:id="countField" promptText="Кол-во"
+                               GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                </GridPane>
+
+                <Separator/>
+
+                <!-- Размеры и характеристики -->
+                <Label text="Характеристики товара"
+                       style="-fx-font-size: 12px; -fx-font-weight: bold;"/>
+
+                <GridPane hgap="10" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="80" prefWidth="80"/>
+                        <ColumnConstraints minWidth="150" prefWidth="150"/>
+                    </columnConstraints>
+
+                    <Label text="Длина (мм):" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <TextField fx:id="lengthField" promptText="Длина"
+                               GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                    <Label text="Ширина (мм):" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <TextField fx:id="widthField" promptText="Ширина"
+                               GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                    <Label text="Высота (мм):" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <TextField fx:id="heightField" promptText="Высота"
+                               GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                    <Label text="Вес (г):" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                    <TextField fx:id="weightField" promptText="Вес"
+                               GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                </GridPane>
+
+                <Separator/>
+
+                <!-- Кнопки управления -->
+                <HBox spacing="10" alignment="CENTER">
+                    <Button fx:id="addButton" text="Добавить товар"
+                            onAction="#onAddProduct" prefWidth="120"
+                            style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+                    <Button fx:id="clearButton" text="Очистить"
+                            onAction="#onClearFields" prefWidth="80"/>
+                </HBox>
+
+                <!-- Заполнитель -->
+                <Region VBox.vgrow="ALWAYS"/>
+
+                <!-- Кнопки экспорта -->
+                <VBox spacing="5">
+                    <Button fx:id="exportButton" text="Экспортировать данные"
+                            onAction="#onExportData" prefWidth="200"
+                            style="-fx-background-color: #2196F3; -fx-text-fill: white;"/>
+                    <Button fx:id="removeButton" text="Удалить выбранный"
+                            onAction="#onRemoveProduct" prefWidth="200"
+                            style="-fx-background-color: #f44336; -fx-text-fill: white;"/>
+                </VBox>
+            </VBox>
+
+            <!-- Правая панель - список товаров -->
+            <VBox spacing="10" style="-fx-padding: 15;">
+                <Label text="Товары на складе"
+                       style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+                <!-- Список -->
+                <ListView fx:id="productList" VBox.vgrow="ALWAYS"
+                          style="-fx-font-family: 'Courier New'; -fx-font-size: 11px;"/>
+
+                <!-- Альтернатива: таблица -->
+                <!--
+                <TableView fx:id="productTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="nameColumn" text="Название" prefWidth="150"/>
+                        <TableColumn fx:id="articleColumn" text="Артикул" prefWidth="80"/>
+                        <TableColumn fx:id="countColumn" text="Кол-во" prefWidth="60"/>
+                        <TableColumn fx:id="shelfColumn" text="Полка" prefWidth="60"/>
+                    </columns>
+                </TableView>
+                -->
+            </VBox>
+        </SplitPane>
+    </center>
+</BorderPane>
